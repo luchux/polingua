@@ -1,0 +1,65 @@
+<div class="span12 well">
+	<div class="row-fluid">
+		
+		<div class="span4">
+			<div class="btn-toolbar">
+  				<div class="btn-group">
+  					<div id="src_sound" hidden="true">{{exercise.translation.es}}</div>
+					<div id="play_sound" class="btn" src="http://tts.duolingo.com/tts/speak/es/"><i class="icon-music"></i></div>
+					<div id="help_me" class="btn"><i class="icon-check"></i></div>
+					<div id="memo" class="btn"><i class="icon-pencil"></i></div>
+				</div>
+			</div>
+			{% for dialogue in dialogues %}
+			<!--
+			<div>
+				
+				{% for dialogue in dialogues %}
+					{% if forloop.counter == 1 %}
+						<h4>{{dialogue.speaker.name}}: {{dialogue.sentence.es}}</h4>
+					{% else %}
+						{% if not dialogue.seq_num|divisibleby:"2" %}
+
+							<div id="{{dialogue.seq_num}}" hidden="true"><h4>{{dialogue.speaker.name}}: {{dialogue.sentence.es}}</h4>
+							</div>
+						
+						{% else %}
+							
+							<label class="radio">
+							  <input type="radio" name="optionsRadios" id="optionsRadios{{dialogue.seq_num}}" value="option{{dialogue.seq_num}}" checked>
+							  {{dialogue.speaker.name}}:{{ dialogue.sentence.es}}
+							</label>
+								
+						{% endif %}	
+					{% endif %}
+
+				{% endfor %}
+			</div>
+			#}
+			-->
+		    <form action="/polingua/train/" method="post" autocomplete="off">{% csrf_token %}
+			{{ form.as_p }}
+			<input type="submit" value="Submit" />	
+			{% if success %}
+				<div class="alert alert-success">AWESOME! YOU ARE DOING WELL!</div>
+			{% else %}
+				<div class="alert alert-error">WRONG BUDDY, TRY AGAIN LATER...</div>
+			{% endif %}		
+		    </form>  
+		       
+		</div>
+		
+		<div class="span4">
+
+			<div id="help" class="alert alert-warning" hidden="true">
+				<hr>
+				{% for dialogue in dialogues %}
+					<h4>{{dialogue.speaker.name}}: {{dialogue.sentence.en}}</h4>
+				{% endfor %}
+			
+			</div>			
+		</div>
+
+    </div>
+
+</div>

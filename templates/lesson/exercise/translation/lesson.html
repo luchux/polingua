@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block css %}
+	{{block.super}}
+	<link rel="stylesheet" type="text/css" href="/static/css/words.css" />
+{% endblock css %}
+
+{% block javascript %}
+	
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="/static/js/xhrcross.js"></script>
+	<script type="text/javascript" src="/static/js/load_statistics.js"></script>
+	<script type="text/javascript" src="/static/js/practice.js"> </script>
+	
+	<script>
+		$(document).ready(function() {
+			$(document).ajaxComplete(function() {
+        		adjust_scores();
+			});
+
+			$('#submit_solution').submit(function(e) { // catch the form's submit event
+	            // Assign handlers immediately after making the request,
+			    // and remember the jqxhr object for this request
+			    var jqxhr = $.post("ajax/validate/",$(this).serialize(), function(response) {
+			    	$('#submit_solution #solution').attr('value', '');
+		      		console.log("success");
+			    })
+			    .success(function(response) { 
+			    	if (response['result']){
+			    		$('#alert-success').show().delay(2000).fadeOut();
+					}
+					else{
+						$('#alert-wrong').show().delay(2000).fadeOut();
+					}
+			    	console.log('success validate')
+			    	update_exercise();
+	           		update_list_exercises();
+	           		adjust_scores();
+	           		console.log('success update')
+			    })
+			    .error(function() { console.log("error"); })
+			    .complete(function() { console.log("complete"); });
+			 	 e.preventDefault();
+			    // perform other work here ...
+			  
+	           
+       		});
+			
+			//first time document.ready() load this components
+			update_exercise();
+        	update_list_exercises();
+	       
+
+	       	
+	  	});
+
+	</script>
+		
+{% endblock javascript %}
+
+{% block container %}
+<!-- enable the modal, info when clicked over review
+<script type="text/javascript" src="static/js/load_modal.js"></script>
+-->
+	<div class="container">
+		<div class="row">
+			
+		<div class="span12 well">
+			<div class="row-fluid">
+				<div class="span4">
+
+					<div id="exercise">
+						<h2></h2>
+					</div>
+
+					<div class="btn-toolbar">
+		  				<div class="btn-group">
+							<div id="play_sound" class="btn" src="http://tts.duolingo.com/tts/speak/es/"><i class="icon-music"></i></div>
+							
+							<div id="help_me" class="btn"><i class="icon-check"></i></div>
+							<div id="memo" class="btn"><i class="icon-pencil"></i></div>
+						</div>
+					</div>
+
+					<div id="div_form">
+					    <form id="submit_solution"	method="post" autocomplete="off">{% csrf_token %}
+							<input type="text" name="solution" id="solution" />
+							<input id="button_solution" type="submit" value="Submit" />	
+						</form>
+					</div>
+
+					<div id="help" class="alert-success" hidden="true">
+		  				<button type="button" class="close" data-dismiss="alert">&times;</button>
+						<h2></h2>
+					</div>
+
+					<div id="alert-success" hidden="true" class="alert alert-success">AWESOME! YOU ARE DOING WELL!</div>
+
+					<div id="alert-wrong" hidden="true" class="alert alert-error">WRONG BUDDY, TRY AGAIN LATER...</div>
+				     
+				       
+				</div>
+
+				
+				<div class="row-fluid">
+					<div width="100%" heigth="100%" id="images" class="span6">
+
+					</div>
+				</div>
+
+		    </div>
+
+		</div>
+
+		
+		<div id="exercises" class="span12 well">
+		</div>
+		
+		
+	</div>
+{% endblock container %}

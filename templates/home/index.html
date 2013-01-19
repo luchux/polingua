@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block container %}
+	<div class="container">
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="row">
+        <div class="span10">
+          <div class="hero-unit">
+            <h2>Polingua</h2>
+            <p>
+            Polingua is the solution to learn languages. It brings you all what you need to speed up the process in which you learn a new language, using special algorithms that understand your skills and weaknesses, reinforcing efficiently whay you need to practice. 
+            <p><a class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+          </div>
+        </div>
+
+      	<hr>
+        <div class="span10">
+          {% include "home/parts/carrusel.html" %}
+        </div><!--Span-->
+      
+      </div><!--Row Fluid-->
+      
+      <hr> 
+      <div class="row-fluid">
+      	{% include "home/parts/description.html" %}	
+      </div>
+
+      <!-- footer : the addresses and copyright info -->
+      <hr>
+
+      <footer>
+      	{% include "home/parts/footer.html" %}
+      </footer> <!-- /footer -->
+
+    </div> <!-- /container -->
+
+ {% endblock container %}   
+ 
+
