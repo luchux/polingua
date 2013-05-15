@@ -1,0 +1,51 @@
+	<script>
+		$(document).ready(function() {
+			load_help_buttons();
+			$(document).ajaxComplete(function() {
+        		adjust_scores();
+			});
+
+			$('#submit_solution').submit(function(e) { // catch the form's submit event
+	            // Assign handlers immediately after making the request,
+			    // and remember the jqxhr object for this request
+			    var jqxhr = $.post("ajax/validate/",$(this).serialize(), function(response) {
+			    	$('#submit_solution #solution').attr('value', '');
+		      		console.log("success");
+			    })
+			    .success(function(response) { 
+			    	if (response['result']){
+			    		
+			    		msg = "Right! Congratulations ";
+			    		msg = msg + response['user'] + "!";
+			    		$('#exercise-result').text(msg)
+			    		$('#exercise-result').show().delay(2000).fadeOut();
+					}
+					else{
+						msg = "Wrong! Keep training ";
+			    		msg = msg + response['user'] + "!";
+			    		$('#exercise-result').text(msg)
+			    		$('#exercise-result').show().delay(2000).fadeOut();
+					}
+			    	console.log('success validate')
+			    	update_exercise();
+	           		update_list_exercises();
+	           		adjust_scores();
+	           		console.log('success update')
+			    })
+			    .error(function() { console.log("error"); })
+			    .complete(function() { console.log("complete"); });
+			 	 e.preventDefault();
+			    // perform other work here ...
+			  
+	           
+       		});
+			
+			//first time document.ready() load this components
+			update_exercise();
+        	update_list_exercises();
+	       
+
+	       	
+	  	});
+
+	</script>
