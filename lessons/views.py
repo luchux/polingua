@@ -11,27 +11,25 @@ from django.views.decorators.csrf import csrf_exempt
 #todo:remove this decorator
 @csrf_exempt
 @login_required(login_url='/accounts/login/')
-
 def submit_solution(request):
 	data = {'result':False}
+	data['user'] = request.user.username
 
 	if request.method == "POST" and request.is_ajax:
 
-		form  = LessonForm(request.POST)
-		solution = form['solution'].value()
+		#form  = LessonForm(request.POST)
+		exercise_uri = request.POST['exercise_uri']
+		solution = request.POST['solution']
 
+		print exercise_uri
+		print solution
 		#exercise = Exercise.objects.get(pk=exercise_id)
 		exercise = Exercise.objects.order_by('last_correct')[0]
-		correct = exercise.validate(solution)
+		data['result'] = exercise.validate(solution)
 
-		if correct:
-			user = request.user
-
-
-		data['result'] = correct
-		data['user'] = user.username
 
 	return HttpResponse(json.dumps(data),mimetype='application/json')
+
 
 
 def exercise(request):
@@ -41,23 +39,21 @@ def exercise(request):
 		#Recover the next exercise.
 		#Convert it into data dictionary and return httresponse
 		exercise = Exercise.objects.order_by('last_correct')[0]
-		data['exercise'] = {'trans_es':exercise.translation.es,
-							'trans_en':exercise.translation.en,
-							'urls':exercise.translation.img_urls.split("URLURL"),
-		}
-
-		return HttpResponse(json.dumps(data),mimetype='application/json')
+		return HttpResponse(json.dumps(exercise.to_json()),mimetype='application/json')
 
 	except:
-
+		print 'exception'
 		data['exercise'] = None
 		return HttpResponse(json.dumps(data),mimetype='application/json')
 
 
 def exercises(request):
+	data = []
 	exercises = Exercise.objects.order_by('last_correct')
-	return render_to_response("lesson/exercise/words/exercises.html", {'exercises':exercises}, context_instance=RequestContext(request))
+	for exercise in exercises:
+		data.append(exercise.to_json())
 
+	return HttpResponse(json.dumps(data), mimetype='application/json')
 ## version 2 ##
 @login_required(login_url='/accounts/login/')
 def words_training(request):

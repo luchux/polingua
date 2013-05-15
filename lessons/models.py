@@ -1,12 +1,12 @@
 from django.db import models
-from datetime import datetime 
+from datetime import datetime
 from django import forms
 import requests
 
 # ---- Class Sentence ------------------------#
 class Sentence(models.Model):
 	es = models.CharField('es',max_length=200)
-	en = models.CharField('en',max_length=200) 
+	en = models.CharField('en',max_length=200)
 
 	def __unicode__(self):
 		try:
@@ -23,36 +23,36 @@ class Translation(models.Model):
 
 	def __unicode__(self):
 		return self.en
-	
+
 #ToDo: a model for images.
 #class ImageExercise(models.Model):
 	def load_images(self):
-			
-			query = self.en
-			url_api = "http://ajax.googleapis.com/ajax/services/search/images?v=1.0&q="+query
-			
-			try:
-				response = requests.get(url_api)
-				json_resp = response.json()
-				img_results = json_resp['responseData']['results']
-				images_urls = []
-				
-				for res in img_results:
-					img_url = res['tbUrl']
-					images_urls.append(img_url)
-					if len(images_urls) == 3:
-						break;
-				
-				self.img_urls = 'URLURL'.join(images_urls)
 
-			except:
-				self.img_urls = []
-				return
+		query = self.en
+		url_api = "http://ajax.googleapis.com/ajax/services/search/images?v=1.0&q="+query
 
-				
+		try:
+			response = requests.get(url_api)
+			json_resp = response.json()
+			img_results = json_resp['responseData']['results']
+			images_urls = []
+
+			for res in img_results:
+				img_url = res['tbUrl']
+				images_urls.append(img_url)
+				if len(images_urls) == 3:
+					break;
+
+			self.img_urls = 'URLURL'.join(images_urls)
+
+		except:
+			self.img_urls = []
+			return
+
+
 
 	def save(self, *args, **kwargs):
-		#if is the first time the object is created, we retrieve images, store in static, 
+		#if is the first time the object is created, we retrieve images, store in static,
 		# and call save() of father.
 		#else call save() father.
 		if not self.pk:
@@ -91,7 +91,7 @@ class ExerciseSentence(models.Model):
 	def validate(self,input_text):
 		#lets add statistics and validate the answer
 		self.tries = self.tries + 1
-		
+
 		if self.sentence.es == input_text:
 			self.last_correct = datetime.now()
 			self.corrects = self.corrects + 1
@@ -101,7 +101,7 @@ class ExerciseSentence(models.Model):
 			self.save()
 			return False
 
-	
+
 
 # ---- Class Exercise ------------------------#
 class Exercise(models.Model):
@@ -111,17 +111,17 @@ class Exercise(models.Model):
 	corrects = models.IntegerField(blank=True,default=0)
 	last_correct = models.DateTimeField(auto_now=False, auto_now_add=False,blank=True,null=True)
 	#ToDO: add score as attribute, and more stats. They are being processed
-	#now out of the model. 
+	#now out of the model.
 
 	#img = models.FileField(upload_to='imgs/',blank=True)
 
 	def __unicode__(self):
 		return u"Exercise "+str(self.pk)
 
-	def validate(self,input_text):
+	def validate(self, input_text):
 		#lets add statistics and validate the answer
 		self.tries = self.tries + 1
-		
+
 		if self.translation.es == input_text:
 			self.last_correct = datetime.now()
 			self.corrects = self.corrects + 1
@@ -131,17 +131,20 @@ class Exercise(models.Model):
 			self.save()
 			return False
 
-	
+	def to_json(self):
+		return {'trans_es': self.translation.es,
+				'trans_en': self.translation.en,
+				'url': self.translation.img_urls}
 
-	
-#ToDo: check if Exercise can be a father class of dialogue and translation. 
+
+#ToDo: check if Exercise can be a father class of dialogue and translation.
 '''
 class DialogueExercise(models.Model):
 	dialogues = models.ManyToManyField(DialogueSentence)
 '''
-#Represent the Dialogues that are part of exercises for training and test. 
-#A Dialogue is a set of Lists of Transletion. i.e. A Speaker, is represented 
-# as a list of Translations. 
+#Represent the Dialogues that are part of exercises for training and test.
+#A Dialogue is a set of Lists of Transletion. i.e. A Speaker, is represented
+# as a list of Translations.
 
 GENDER_CHOICES = ((0, 'Male'), (1, 'Female'),(2,'NoIdea'))
 
@@ -160,14 +163,14 @@ class DialogueSentence(models.Model):
 	seq_num = models.IntegerField('seq_num',max_length = 200)
 
 	def __unicode__(self):
-		return self.speaker.name + ' - ' + self.sentence.__unicode__() 
+		return self.speaker.name + ' - ' + self.sentence.__unicode__()
 
-# ---- Class Dialogue ------------------------#		 
+# ---- Class Dialogue ------------------------#
 class Dialogue(models.Model):
 	num_speakers = models.IntegerField('num_speakers', max_length = 20)
 	sentences = models.ManyToManyField(DialogueSentence)
 
-#General Lessons 
+#General Lessons
 class Lesson(models.Model):
 	name = models.CharField('name',max_length=200)
 	exercises = models.ManyToManyField(Exercise)
