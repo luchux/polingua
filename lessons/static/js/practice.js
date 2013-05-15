@@ -15,7 +15,7 @@
 			
 		};
 
-		$.get('/polingua/exercise',function(response){
+		$.get('/polingua/words/ajax/exercise',function(response){
 
 			if (response) {
 			
@@ -46,7 +46,7 @@
 
 	function update_list_exercises() {
 				//Todo:
-		$('#exercises').load('/polingua/exercises/');
+		$('#exercises').load('/polingua/words/ajax/exercises/');
 	}
 			
 	function adjust_scores(){
@@ -57,7 +57,6 @@
 			$('.score-bars .bar').each(function(){
 				$(this).attr('style','width:' + $(this).text()*100 +'%')
 			});
-			
 			
 			$('.ratio-bars').each(function(k,elem){
 				total = 0
@@ -74,15 +73,14 @@
 			
 	};
 
-    function play_sound(){
+    function load_help_buttons(){
 
         $("#play_sound").click(function(){
 
-  		 	$('body').append("<embed src='" + $('#play_sound').attr('src') + $('#help').text() + "'"+ "autostart='true' hidden='true' loop='false'>");
+  		 	$('body').append("<embed src='" + $('#play_sound').attr('src') + $('#help h2').text() + "'"+ "autostart='true' hidden='true' loop='false'>");
   		 });
-    };
 
-    function show_help(){	
+	
 		$("#help_me").click(function(){
 
 			$('#help').show().delay(4000).fadeOut();

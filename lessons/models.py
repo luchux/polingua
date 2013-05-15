@@ -101,6 +101,7 @@ class ExerciseSentence(models.Model):
 			self.save()
 			return False
 
+	
 
 # ---- Class Exercise ------------------------#
 class Exercise(models.Model):

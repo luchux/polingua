@@ -6,7 +6,7 @@
 {% endblock css %}
 
 {% block javascript %}
-	
+	{{block.super}}
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script type="text/javascript" src="/static/js/xhrcross.js"></script>
 	<script type="text/javascript" src="/static/js/load_statistics.js"></script>
@@ -14,6 +14,7 @@
 	
 	<script>
 		$(document).ready(function() {
+			load_help_buttons();
 			$(document).ajaxComplete(function() {
         		adjust_scores();
 			});

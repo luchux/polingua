@@ -1,4 +1,4 @@
-<html lang="en">
+<html ng-app="mainapp">
   <head>
     <meta charset="utf-8">
     <title>{% block title %} PoLingua {% endblock %}</title>
@@ -31,36 +31,22 @@
 
     {% endblock css %}
   
+    
+    {% block javascript %}
     <!-- javascript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- Todo: Placed at the end of the document so the pages load faster -->
     <script src="/static/bootstrap/js/jquery.js"></script>
-    <!--
-    <script src="bootstrap/js/bootstrap-transition.js"></script>
-    <script src="bootstrap/js/bootstrap-alert.js"></script>
-    -->
-    <script src="/static/bootstrap/js/bootstrap-modal.js"></script>
     <script src="/static/bootstrap/js/bootstrap-dropdown.js"></script>
-    <!--
-    <script src="bootstrap/js/bootstrap-scrollspy.js"></script>
-    <script src="bootstrap/js/bootstrap-tab.js"></script>
-    <script src="bootstrap/js/bootstrap-tooltip.js"></script>
-    <script src="bootstrap/js/bootstrap-popover.js"></script>
-    <script src="bootstrap/js/bootstrap-button.js"></script>
-    -->
     <script src="/static/bootstrap/js/bootstrap-collapse.js"></script>
-    <script src="/static/bootstrap/js/bootstrap-carousel.js"></script>
-    <!--
-    <script src="bootstrap/js/bootstrap-typeahead.js"></script>
-    -->
-    <script src="/static/bootstrap/js/jquery.js"></script>
-    <!--<script type="text/javascript" src="https://www.google.com/jsapi"></script>-->
-    {% block javascript %}
     {% endblock javascript %}
     
   </head>
 
-  <body>
+    {%block bodyng%}
+    {%endblock bodyng%}
+    
+    {% block navigator %}
      <!-- the upper bar, username menu. -->
   	 <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
@@ -95,6 +81,8 @@
         </div><!-- container> -->
       </div><!-- navbar-inner -->
     </div><!-- navbar -->
+    
+    {% endblock %}
     {% block container %}
     {% endblock %}
     </body>

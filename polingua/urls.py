@@ -4,7 +4,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
-from lessons.views import train, results, dialogue, exercise, exercises, submit_solution
+from lessons.views import exercise, exercises, submit_solution, words_training,train
 from statistics.views import get_values
 
 from tastypie.api import Api
@@ -18,16 +18,17 @@ urlpatterns = patterns('',
     # Examples:
      url(r'^$', 'polingua.views.home', name='home'),
     # url(r'^polingua/', include('polingua.foo.urls')),
-     url(r'^polingua/train/$',train),
-     url(r'^polingua/dialogue/$',dialogue),
-     url(r'^polingua/results/$',results),
-     url(r'^polingua/exercises/$',exercises),
-     url(r'^polingua/exercise/$',exercise),
-     url(r'^polingua/train/ajax/validate/$',submit_solution),
-     #url(r'^polingua/train/api$',include(v1_api.urls)),
+     #url(r'^polingua/dialogue/$',dialogue),
+     url(r'^polingua/words/ajax/exercise/$',exercise),
+     url(r'^polingua/words/ajax/exercises/$',exercises),
+     (r'^polingua/words/$',words_training),
+     (r'^polingua/words/',words_training),
+     url(r'^polingua/words/ajax/validate/$',submit_solution),
+     url(r'^polingua/train/api$',include(v1_api.urls)),
      url(r'^api/', include(v1_api.urls)),
      url(r'^polingua/stats/$',get_values),
-     #url(r'^ajax/train$',ajax_train),
+     url(r'^polingua/train$',train),
+     (r'^accounts/login/$', 'django.contrib.auth.views.login'),
 
 
     # Uncomment the admin/doc line below to enable admin documentation:
