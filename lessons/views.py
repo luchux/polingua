@@ -18,18 +18,19 @@ def submit_solution(request):
 	if request.method == "POST" and request.is_ajax:
 
 		#form  = LessonForm(request.POST)
-		exercise_uri = request.POST['exercise_uri']
+		#exercise_uri = request.POST['exercise_uri']
 		solution = request.POST['solution']
 
-		print exercise_uri
+		#print exercise_uri
 		print solution
 		#exercise = Exercise.objects.get(pk=exercise_id)
 		exercise = Exercise.objects.order_by('last_correct')[0]
 		data['result'] = exercise.validate(solution)
 
 
-	return HttpResponse(json.dumps(data),mimetype='application/json')
-
+		return HttpResponse(json.dumps(data),mimetype='application/json')
+	else:
+		return train(request)
 
 
 def exercise(request):
@@ -82,17 +83,8 @@ def train(request):
 	exercises = Exercise.objects.order_by('last_correct')
 	exercise = exercises[0]
 
-	if request.method == 'GET':
-		#Data is comming from a get method ajax probably
+	pass
 
-		form = LessonForm()
-		c = {'form': form,'exercise':exercise,'exercises':exercises}
-		return render_to_response("lesson/exercise/translation/lesson.html", c, context_instance=RequestContext(request))
-
-	else:
-		form = LessonForm()
-		c = {'form': form,'exercise':exercise,'exercises':exercises}
-		return render_to_response("lesson/exercise/translation/lesson.html", c, context_instance=RequestContext(request))
 
 
 '''
