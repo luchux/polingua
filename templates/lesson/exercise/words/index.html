@@ -1,12 +1,57 @@
-<html lang="en" ng-app="words">
-<head>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular.min.js"></script>
-  <script src="/static/js/app.js"></script>
-  <script src="/static/js/controllers.js"></script>
-</head>
+{% extends "base.html" %}
+{% block container %}
+<html>
+<script>
+    $(document).ready(function() {
+        load_help_buttons();
+        $(document).ajaxComplete(function() {
+            adjust_scores();
+        });
+
+        $('#submit_solution').submit(function(e) { // catch the form's submit event
+            // Assign handlers immediately after making the request,
+            // and remember the jqxhr object for this request
+            var jqxhr = $.post("ajax/validate/",$(this).serialize(), function(response) {
+                $('#submit_solution #solution').attr('value', '');
+                  console.log("success");
+            })
+            .success(function(response) {
+                if (response['result']){
+
+                    msg = "Right! Congratulations ";
+                    msg = msg + response['user'] + "!";
+                    $('#exercise-result').text(msg)
+                    $('#exercise-result').show().delay(2000).fadeOut();
+                }
+                else{
+                    msg = "Wrong! Keep training ";
+                    msg = msg + response['user'] + "!";
+                    $('#exercise-result').text(msg)
+                    $('#exercise-result').show().delay(2000).fadeOut();
+                }
+                console.log('success validate')
+                update_exercise();
+                   update_list_exercises();
+                   adjust_scores();
+                   console.log('success update')
+            })
+            .error(function() { console.log("error"); })
+            .complete(function() { console.log("complete"); });
+              e.preventDefault();
+            // perform other work here ...
+           });
+        //first time document.ready() load this components
+        update_exercise();
+        update_list_exercises();
+
+      });
+
+</script>
 <body>
- 
-  <div ng-view></div>
- 
+
+ {% include "lesson/exercise/words/exercise.html" %}
+ {% include "lesson/exercise/words/exercises.html" %}
+
 </body>
 </html>
+{% endblock container %}

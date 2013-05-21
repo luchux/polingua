@@ -12,11 +12,9 @@ from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 @login_required(login_url='/accounts/login/')
 def submit_solution(request):
-
+	data = {'result':False}
+	data['user'] = request.user.username
 	if request.method == "POST" and request.is_ajax:
-
-		data = {'result':False}
-		data['user'] = request.user.username
 
 		#exercise_uri = request.POST['exercise_uri']
 		solution = request.POST['solution']
@@ -28,7 +26,8 @@ def submit_solution(request):
 		return HttpResponse(json.dumps(data),mimetype='application/json')
 	else:
 		#TODO: checkear
-		return train(request)
+		return HttpResponse(json.dumps(data),mimetype='application/json')
+
 
 ## Version 1 ##
 @login_required(login_url='/accounts/login/')
@@ -38,5 +37,5 @@ def train(request):
 	exercises = Exercise.objects.order_by('last_correct')
 	exercise = exercises[0]
 	c = {'exercise':exercise,'exercises':exercises}
-	return render_to_response("lesson/exercise/translation/lesson.html", c,context_instance=RequestContext(request))
+	return render_to_response("lesson/exercise/words/index.html", c,context_instance=RequestContext(request))
 

@@ -14,7 +14,7 @@
 
 		};
 
-		$.get('/words/api/v1/exercise/?format=json',function(response){
+		$.get('/api/exercise/?format=json',function(response){
 
 			if (response) {
 
