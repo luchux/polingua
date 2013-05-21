@@ -7,7 +7,7 @@ admin.autodiscover()
 from tastypie.api import Api
 from lessons.api import TranslationResource, ExerciseResource
 
-from lessons.views import train
+from lessons.views import train,submit_solution
 
 #TODO: there is a cleaner way of implement this
 v1_api = Api(api_name='words')
@@ -21,6 +21,8 @@ urlpatterns = patterns('',
     #  -  /api/words/translates
     url(r'^api/', include(v1_api.urls)),
     url(r'^train/',train),
+    url(r'^train/validate/',submit_solution),
+
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 

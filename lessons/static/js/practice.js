@@ -13,14 +13,16 @@
 			*/
 
 		};
-
-		$.get('/api/exercise/?format=json',function(response){
+		//TODO: ver la api porque aca devuelve adentro del objeto tmbn
+		//las stats. deberia traer solo datos del ejercicio.
+		$.get('/api/words/exercise/?format=json',function(response){
 
 			if (response) {
-
-				exercise = response['exercise'];
-				native_sent = exercise['trans_en'];
-				foreing_sent = exercise['trans_es'];
+				exercises = response['objects'];
+				console.log(exercises)
+				exercise = exercises[0]['translation'];
+				native_sent = exercise['en'];
+				foreing_sent = exercise['es'];
 
 				$('#exercise h2').text(native_sent)
 
@@ -45,7 +47,6 @@
 
 	function update_list_exercises() {
 				//Todo:
-		$('#exercises').load('/polingua/words/ajax/exercises/');
 	}
 
 	function adjust_scores(){

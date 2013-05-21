@@ -1,4 +1,13 @@
 {% extends "base.html" %}
+
+{% block javascript %}
+{{block.super}}
+<script type="text/javascript" src="/static/js/xhrcross.js"></script>
+{#<script type="text/javascript" src="/static/js/load_statistics.js"></script>#}
+<script type="text/javascript" src="/static/js/practice.js"></script>
+{% endblock javascript %}
+
+
 {% block container %}
 <html>
 <script>
@@ -11,7 +20,7 @@
         $('#submit_solution').submit(function(e) { // catch the form's submit event
             // Assign handlers immediately after making the request,
             // and remember the jqxhr object for this request
-            var jqxhr = $.post("ajax/validate/",$(this).serialize(), function(response) {
+            var jqxhr = $.post("train/validate/",$(this).serialize(), function(response) {
                 $('#submit_solution #solution').attr('value', '');
                   console.log("success");
             })
@@ -54,4 +63,5 @@
 
 </body>
 </html>
+
 {% endblock container %}
