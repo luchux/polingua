@@ -1,16 +1,12 @@
 	function update_exercise() {
 
 		function roundImages(){
-
 			$('#images img').each(function() {
+				console.log(1)
 				var imgClass = $(this).attr('class');
 				$(this).wrap('<span class="image-wrap ' + imgClass + '" style="width: auto; height: auto;"/>');
 				$(this).removeAttr('class');
 			});
-			 /*
-			    $(this).css("opacity","0");
-			  });
-			*/
 
 		};
 		//TODO: ver la api porque aca devuelve adentro del objeto tmbn
@@ -30,10 +26,12 @@
 
 
 				images = ""
-				$(exercise['urls']).each(function(key,value) {
+				urls = exercise['img_urls'].split("URLURL")
+				$.each(urls, function(key,value) {
 					images = images + "<img class='rounded-img' src='" + value + "'/>";
 				});
 				$('#images').html(images);
+
 				roundImages();
 
 
