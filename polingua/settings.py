@@ -1,3 +1,5 @@
+import imp, os, sys
+
 # Django settings for polingua project.
 
 DEBUG = True
@@ -45,7 +47,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = '/Users/luchux/Dropbox/Devel/polingua/polingua/lessons/static/'
+MEDIA_ROOT = os.path.abspath('.') + '/lessons/static/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -67,7 +69,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/Users/luchux/Dropbox/Devel/polingua/polingua/lessons/static/',
+    os.path.abspath('.') + '/lessons/static/',
 )
 
 # List of finder classes that know how to find static files in
@@ -108,7 +110,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    "/Users/luchux/Dropbox/Devel/polingua/polingua/templates/",
+    os.path.abspath('.') + "/templates/",
 )
 
 INSTALLED_APPS = (
@@ -120,6 +122,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
      'django.contrib.admin',
+    # 'bootstrap_admin',
     # Uncomment the next line to enable admin documentation:
      'django.contrib.admindocs',
      'lessons',
