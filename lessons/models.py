@@ -3,7 +3,12 @@ from datetime import datetime
 from django import forms
 import requests
 
+# Constant gender_choice, to use when a speaker is talking. Would be use for some conjugations.
+GENDER_CHOICES = ((0, 'Male'), (1, 'Female'),(2,'NoIdea'))
+
+
 # ---- Class Sentence ------------------------#
+# TODO: NOT USED YET. EXPERIMENTAL
 class Sentence(models.Model):
 	es = models.CharField('es',max_length=200)
 	en = models.CharField('en',max_length=200)
@@ -16,6 +21,8 @@ class Sentence(models.Model):
 
 
 # ---- Class Translation ------------------------#
+# A translation represent a word, in different languages.
+#
 class Translation(models.Model):
 	es = models.CharField('es',max_length=200)
 	en = models.CharField('en',max_length=200)
@@ -76,6 +83,9 @@ class ExerciseBase(models.Model):
 	def validate(self,instance):
 		pass
 
+# --- Class ExerciseSentence -------------------------#
+# TODO: NOT USED YET. Experimental
+# To exercise sentences insetad of words.
 
 class ExerciseSentence(models.Model):
 	sentence = models.ForeignKey(Sentence)
@@ -100,8 +110,6 @@ class ExerciseSentence(models.Model):
 		else:
 			self.save()
 			return False
-
-
 
 # ---- Class Exercise ------------------------#
 class Exercise(models.Model):
@@ -146,7 +154,6 @@ class DialogueExercise(models.Model):
 #A Dialogue is a set of Lists of Transletion. i.e. A Speaker, is represented
 # as a list of Translations.
 
-GENDER_CHOICES = ((0, 'Male'), (1, 'Female'),(2,'NoIdea'))
 
 # ---- Class Speaker ------------------------#
 class Speaker(models.Model):
