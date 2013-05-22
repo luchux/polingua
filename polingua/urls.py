@@ -4,6 +4,9 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
+#login, logout builtin functionalities in Django.
+from django.contrib.auth.views import login, logout_then_login
+
 from tastypie.api import Api
 from lessons.api import TranslationResource, ExerciseResource
 
@@ -19,7 +22,11 @@ urlpatterns = patterns('',
     # words api impelements:
     #  -  /api/words/exercises
     #  -  /api/words/translates
+    url(r'^accounts/login',login,{'template_name': 'registration/login.html'}),
+    url(r'^accounts/logout',logout_then_login),
+
     url(r'^api/', include(v1_api.urls)),
+
     url(r'^train/',train),
     url(r'^trains/validate/',submit_solution),
 
