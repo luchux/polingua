@@ -21,7 +21,7 @@ urlpatterns = patterns('',
     #  -  /api/words/translates
     url(r'^api/', include(v1_api.urls)),
     url(r'^train/',train),
-    url(r'^train/validate/',submit_solution),
+    url(r'^trains/validate/',submit_solution),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
