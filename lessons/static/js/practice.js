@@ -15,6 +15,10 @@
 
 			if (response) {
 				exercises = response['objects'];
+
+				//Ojo, esto es feo.
+				update_list_exercises(exercises)
+
 				console.log(exercises)
 				exercise = exercises[0]['translation'];
 				native_sent = exercise['en'];
@@ -34,7 +38,6 @@
 
 				roundImages();
 
-
 			}
 			else{
 				console.log('Error: no response $.get(polingua/exercise)')
@@ -43,8 +46,11 @@
 
 	};
 
-	function update_list_exercises() {
-				//Todo:
+	function update_list_exercises(exercises) {
+		exercises = typeof exercises !== 'undefined' ? exercises : [];
+		$.each(exercises,function(exercise){
+			console.log(exercise)
+		});
 	}
 
 	function adjust_scores(){
@@ -85,3 +91,39 @@
 		    // Animation complete.
 		  });
 	};
+
+//DOCUMENT READY
+$(document).ready(function() {
+
+ $('#submit_solution').submit(function(e) { // catch the form's submit event
+        // Assign handlers immediately after making the request,
+        // and remember the jqxhr object for this request
+
+        var jqxhr = $.post("/trains/validate/",{'solution':$('#solution').val()})
+        .done(function(response) {
+            $('#submit_solution #solution').attr('value', '');
+            if (response['result']){
+
+                msg = "Right! Congratulations ";
+                msg = msg + response['user'] + "!";
+                $('#exercise-result').text(msg)
+                $('#exercise-result').show().delay(2000).fadeOut();
+            }
+            else{
+                msg = "Wrong! Keep training ";
+                msg = msg + response['user'] + "!";
+                $('#exercise-result').text(msg)
+                $('#exercise-result').show().delay(2000).fadeOut();
+            }
+            console.log('success validate')
+            update_exercise();
+               update_list_exercises();
+               adjust_scores();
+               console.log('success update')
+        })
+        .error(function() { console.log("error"); })
+        .complete(function() { console.log("complete"); });
+          e.preventDefault();
+        // perform other work here ...
+       });
+});
