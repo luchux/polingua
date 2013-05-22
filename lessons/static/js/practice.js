@@ -48,9 +48,13 @@
 
 	function update_list_exercises(exercises) {
 		exercises = typeof exercises !== 'undefined' ? exercises : [];
-		$.each(exercises,function(exercise){
-			console.log(exercise)
-		});
+		var table = $("#table_exercises tbody");
+		var html = ""
+	    $.each(exercises, function(idx, exercise){
+			html += "<tr><td>" + exercise['translation']['es'] + "</td><td>" + exercise['translation']['en'] + "</td><td style='width=80%'><div class='ratio-bars'><div class='progress progress-success progress-striped active'><div class='bar bar-corrects'>" + exercise['corrects'] + "</div></div><div class='progress progress-danger progress-striped active'><div class='bar bar-tries'>" + exercise['tries'] + "</div></div></div></td><td class = 'td-score'><div class='progress progress-success progress-striped score-bars'><div class='bar'r>"  + exercise['corrects'] / exercise['tries'] + "</div></div></td><td>" + exercise['last_correct'] + "</td></tr>"
+
+	    });
+		table.html(html)
 	}
 
 	function adjust_scores(){
