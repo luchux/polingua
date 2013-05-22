@@ -99,7 +99,7 @@
 //DOCUMENT READY
 $(document).ready(function() {
 
- $('#submit_solution').submit(function(e) { // catch the form's submit event
+	$('#submit_solution').submit(function(e) { // catch the form's submit event
         // Assign handlers immediately after making the request,
         // and remember the jqxhr object for this request
 
@@ -130,4 +130,10 @@ $(document).ready(function() {
           e.preventDefault();
         // perform other work here ...
        });
+
+	update_exercise();
+	adjust_scores();
+	load_help_buttons();
+
+
 });
